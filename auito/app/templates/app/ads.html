@@ -1,0 +1,23 @@
+{% extends "app/index.html" %}
+
+{% block content %}
+  {% if latest_ad_list %}
+      {% for ad in latest_ad_list %}
+        <div class="card mt-5 w-50">
+          <img class="card-img-top" src="{{ ad.image.url }}" alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title">{{ ad.title }}</h4>
+            <p class="card-text">{{ ad.description }}</p>
+            <p class="card-subtitle mb-2 text-muted">Марка: {{ ad.car.brand }}</p>
+            <p class="card-subtitle mb-2 text-muted">Модель: {{ ad.car.model}}</p>
+            <h5 class="card-title mt-4">{{ ad.car.price }} руб.</h5>
+            
+            <h6 class="card-subtitle mb-2 text-muted mt-3">{{ ad.pub_date }}, {{ ad.car.owner }}</h6>
+            <a href="{% url 'app:ad' ad.id %}" class="btn btn-primary">Открыть объявление</a>
+          </div>
+        </div>      
+      {% endfor %}
+  {% else %}
+      <p>No ads are available.</p>
+  {% endif %}
+{% endblock content %}

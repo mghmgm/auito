@@ -1,0 +1,11 @@
+node_modules/
+auito-env/
+media_cdn/
+.idea
+.vscode
+*.swp
+*.ai
+*.psd
+*sublime*
+npm-debug.*
+Thumbs.db

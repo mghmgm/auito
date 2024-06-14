@@ -1,0 +1,21 @@
+{% extends "app/index.html" %}
+
+{% block content %}
+  {% if latest_post_list %}
+      {% for post in latest_post_list %}
+        <div class="card mt-5 w-50 ">
+          <img class="card-img-top" src="{{ post.image.url }}" alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title">{{ post.title }}</h4>
+            <p class="card-text post-desc">
+              {{ post.description }}
+            </p>
+            <h6 class="card-subtitle mb-2 text-muted">{{ post.pub_date }}, {{ post.author }}</h6>
+            <a href="{% url 'app:post' post.id %}" class="btn btn-primary">Читать полностью</a>
+          </div>
+        </div>      
+      {% endfor %}
+  {% else %}
+      <p>No posts are available.</p>
+  {% endif %}
+{% endblock content %}

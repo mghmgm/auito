@@ -1,0 +1,63 @@
+{% extends "app/index.html" %}
+
+{% block content %}
+    <div class="card mt-5 w-50 p-3">
+        <div class="card-body">
+            <h4 class="card-title">{{ user.username }}</h4>
+            <p class="card-title">Имя: {{ user.first_name }}</p>
+            <p class="card-title">Фамилия: {{ user.last_name }}</p>
+            <p class="card-title">Email: {{ user.email }}</p>
+        </div>
+
+        <form id="logout-form" action="{% url 'app:logout' %}" method="post" style="display: none;">
+            {% csrf_token %}
+        </form>
+        <button class="btn btn-primary" onclick="document.getElementById('logout-form').submit();">Выйти</button>
+    </div> 
+    
+    <h4 class="card-title mt-3">Понравившееся</h4>
+    {% if favorites_list %}
+        {% for favorite in favorites_list %}
+            <a href="{% url 'app:post' pk=favorite.post.id%}">{{ favorite.post.title }}</a>
+        {% endfor %}
+    {% else %}
+        <p>Пока нет</p>
+    {% endif %}
+
+    <div class="card mt-5 w-50 p-3">
+        <div class="card-body">
+            <h4 class="card-title">Машины</h4>
+            {% if cars_list %}
+                {% for car in cars_list %}
+                    <div class="card mt-4 w-100 p-3">
+    
+                        {% if car.ad %}
+                            <img class="card-img-top" src="{{ car.ad.image.url }}" alt="Card image cap">
+                            <div class="ad-details mt-3">
+                                <h4 class="card-title">{{ car.ad.title }}</h4>
+                                <p>{{ car.ad.description }}</p>
+                        {% endif %}
+
+                        <p class="card-text mt-4">Марка: {{ car.brand }}</p>
+                        <p class="card-text">Модель: {{ car.model }}</p>
+                        <p class="card-text">Пробег: {{ car.mileage }} км</p>
+                        <p class="card-text">Тип кузова: {{ car.body_type }}</p>
+                        <p class="card-text">Мощность: {{ car.power }} л.с.</p>
+                        <h5 class="card-title mt-4">{{ car.price }} руб.</h5>
+
+                        {% if car.ad %}
+                            <h6 class="card-subtitle mb-2 mt-3 text-muted">{{ car.ad.pub_date }}</h6>
+                            <a href="{% url 'app:update' pk=car.ad.id %}" class="btn btn-primary mt-3 px-3 mx-3">Изменить объявление</a>
+                            <a href="{% url 'app:delete' pk=car.ad.id %}" class="btn btn-primary mt-3 px-4">Удалить объявление</a>
+                        {% else %}
+                            <a href="{% url 'app:create' pk=car.id %}" class="btn btn-primary mt-3 px-4">Создать объявление</a>
+                        {% endif %}
+                    </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Пока нет</p>
+            {% endif %}
+        </div>
+    </div> 
+{% endblock content %}

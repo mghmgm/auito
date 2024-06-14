@@ -1,0 +1,24 @@
+{% extends "app/index.html" %}
+
+{% block content %}
+  <div class="container mt-5">
+        <h2>Создание объявления</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.media }}
+            {% csrf_token %}
+            <div class="form-group mt-3">
+                <label for="image">Фотография:</label>
+                <input type="file" name="image" class="mx-3" id="image">
+            </div>
+            <div class="form-group mt-3">
+                <label for="title">Название:</label>
+                <input type="text" class="form-control" id="title" name="title">
+            </div>
+            <div class="form-group mt-3">
+                <label for="description">Описание:</label>
+                <textarea class="form-control" id="description" name="description"></textarea>
+            </div>
+            <button type="submit" formmethod="post" class="btn btn-primary mt-3">Сохранить</button>
+        </form>
+    </div>
+{% endblock content %}

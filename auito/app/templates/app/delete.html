@@ -1,0 +1,12 @@
+{% extends "app/index.html" %}
+
+{% block content %}
+  <p class="mt-5 fs-3">Вы уверены, что хотите удалить это объявление?</p>
+  <form method="post">
+      {% csrf_token %}
+      <div class="delete-btn">
+          <button type="submit" class="btn btn-primary mt-3 px-5 fs-5">Да, удалить</button>
+          <a href="{% url 'app:profile' %}" class="mt-3 fs-5">Отмена</a>
+      </div>
+  </form>
+{% endblock content %}
