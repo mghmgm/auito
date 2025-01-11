@@ -3,17 +3,23 @@
 {% block content %}
   {% if latest_post_list %}
       {% for post in latest_post_list %}
-        <div class="card mt-5 w-50 ">
-          <img class="card-img-top" src="{{ post.image.url }}" alt="Card image cap">
-          <div class="card-body">
-            <h4 class="card-title">{{ post.title }}</h4>
-            <p class="card-text post-desc">
-              {{ post.description }}
-            </p>
-            <h6 class="card-subtitle mb-2 text-muted">{{ post.pub_date }}, {{ post.author }}</h6>
-            <a href="{% url 'app:post' post.id %}" class="btn btn-primary">Читать полностью</a>
+      <div class="card mt-5 w-50">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{ post.image.url }}" class="img-fluid rounded-start" alt="Card image cap" style="height: 100%; object-fit: cover;">
           </div>
-        </div>      
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ post.title }}</h5>
+              <p class="card-text post-desc">
+                {{ post.description }}
+              </p>
+              <h6 class="card-subtitle mb-2 text-muted">{{ post.pub_date }}, {{ post.author }}</h6>
+              <a href="{% url 'app:post' post.id %}" class="btn btn-primary">Читать полностью</a>
+            </div>
+          </div>
+        </div>
+      </div>     
       {% endfor %}
   {% else %}
       <p>No posts are available.</p>

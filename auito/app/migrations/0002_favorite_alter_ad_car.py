@@ -7,23 +7,33 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0001_initial'),
+        ("app", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Favorite',
+            name="Favorite",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'users_favorites',
-                'managed': False,
+                "db_table": "users_favorites",
+                "managed": False,
             },
         ),
         migrations.AlterField(
-            model_name='ad',
-            name='car',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='app.car'),
+            model_name="ad",
+            name="car",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE, to="app.car"
+            ),
         ),
     ]

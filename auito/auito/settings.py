@@ -17,7 +17,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app', #подключаем приложение app
+    
+    'rest_framework',
+    'simple_history',
+    'import_export',
+    'app',
 ]
 
 MIDDLEWARE = [
@@ -28,6 +32,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'auito.urls'
@@ -35,7 +40,7 @@ ROOT_URLCONF = 'auito.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        "DIRS": [BASE_DIR / "templates"], #указать путь то шаблонов
+        "DIRS": [BASE_DIR / "templates"], #указать путь до шаблонов
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -60,18 +65,13 @@ TEMPLATE_DIRS = (
 WSGI_APPLICATION = 'auito.wsgi.application'
 
 
-# подключение к postgre sql базе данных "auito"
+# подключение к бд
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        "NAME": "auito",
-        "USER": "postgres",
-        "PASSWORD": "root",
-        "HOST": "localhost",
-        "PORT": "",
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 AUTH_USER_MODEL = 'app.User' #чтобы создать кастомную таблицу юзеров
 
@@ -111,3 +111,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #для загрузки картинок из бд
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media_cdn")
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2
+}
