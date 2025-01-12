@@ -13,12 +13,21 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q
-from datetime import date
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import filters
 from .models import Post, Ad, Car, Comment, Favorite
 from .forms import LoginForm
+from django_filters import rest_framework as  rest_framework_filters
+from django_filters.rest_framework import DjangoFilterBackend
 
+
+class PostFilter(rest_framework_filters.FilterSet):
+    author =  rest_framework_filters.CharFilter(field_name='author__username', lookup_expr='iexact')
+    pub_date =  rest_framework_filters.CharFilter(field_name='pub_date', lookup_expr='icontains')
+
+    class Meta:
+        model = Post
+        fields = ['author', 'pub_date']
 
 class PostViewSet(viewsets.ModelViewSet):
     """
@@ -27,9 +36,12 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
-
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    
+    # фильтр по автору и дате
+    filterset_class = PostFilter
+    
     # фильтр поисковая строка
-    filter_backends = [filters.SearchFilter]
     search_fields = ["title"]
 
     # фильтр по постам авторизированного юзера
