@@ -17,30 +17,39 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import filters
 from .models import Post, Ad, Car, Comment, Favorite
 from .forms import LoginForm
-from django_filters import rest_framework as  rest_framework_filters
+from django_filters import rest_framework as rest_framework_filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 
 class PostFilter(rest_framework_filters.FilterSet):
-    author =  rest_framework_filters.CharFilter(field_name='author__username', lookup_expr='iexact')
-    pub_date =  rest_framework_filters.CharFilter(field_name='pub_date', lookup_expr='icontains')
+    """
+    Кастомизированный фильтр для Posts
+    """
+    author = rest_framework_filters.CharFilter(
+        field_name="author__username", lookup_expr="iexact"
+    )
+    pub_date = rest_framework_filters.CharFilter(
+        field_name="pub_date", lookup_expr="icontains"
+    )
 
     class Meta:
         model = Post
-        fields = ['author', 'pub_date']
+        fields = ["author", "pub_date"]
+
 
 class PostViewSet(viewsets.ModelViewSet):
     """
     API для запросов на получение данных о Posts
     """
+
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    
+
     # фильтр по автору и дате
     filterset_class = PostFilter
-    
+
     # фильтр поисковая строка
     search_fields = ["title"]
 
@@ -60,11 +69,11 @@ class PostViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(posts, many=True)
             return Response(serializer.data)
         return Response({"error": "author parameter is required"}, status=400)
-    
+
     # поиск по автору (фильтрация по именнованным аргументам в url)
-    @action(methods=["GET"], detail=False, url_path='author/(?P<author_name>[^/.]+)')
+    @action(methods=["GET"], detail=False, url_path="author/(?P<author_name>[^/.]+)")
     def search_by_author_arg(self, request, *args, **kwargs):
-        author_name = kwargs.get('author_name')
+        author_name = kwargs.get("author_name")
         if author_name:
             posts = Post.objects.filter(author__username__icontains=author_name)
             serializer = PostSerializer(posts, many=True)
@@ -89,6 +98,7 @@ class AdViewSet(viewsets.ModelViewSet):
     """
     API для запросов на получение данных о Ads
     """
+
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
 
@@ -126,6 +136,7 @@ class PostsView(generic.ListView):
     """
     View для страницы с Posts
     """
+
     template_name = "app/posts.html"
     context_object_name = "latest_post_list"
 
@@ -137,6 +148,7 @@ class PostView(generic.DetailView):
     """
     View для страницы с Post
     """
+
     model = Post
     template_name = "app/post.html"
 
@@ -155,6 +167,7 @@ class AdsView(generic.ListView):
     """
     View для страницы с Ads
     """
+
     template_name = "app/ads.html"
     context_object_name = "latest_ad_list"
 
@@ -166,6 +179,7 @@ class AdView(generic.DetailView):
     """
     View для страницы с Ad
     """
+
     model = Ad
     template_name = "app/ad.html"
 
@@ -182,6 +196,7 @@ class LoginView(FormView):
     """
     View для страницы Login
     """
+
     template_name = "app/login.html"
     form_class = LoginForm
     success_url = reverse_lazy("app:posts")
@@ -202,6 +217,7 @@ class ProfileView(LoginRequiredMixin, generic.TemplateView):
     """
     View для страницы Profile
     """
+
     template_name = "app/profile.html"
 
     def get_context_data(self, **kwargs):
@@ -221,6 +237,7 @@ class CreateAdView(CreateView):
     """
     View для страницы Create Ad
     """
+
     model = Ad
     fields = ["image", "title", "description"]
     template_name = "app/create.html"
@@ -240,6 +257,7 @@ class UpdateAdView(UpdateView):
     """
     View для страницы Update Ad
     """
+
     model = Ad
     fields = ["title", "description", "image"]
     template_name = "app/update.html"
@@ -250,6 +268,7 @@ class DeleteAdView(DeleteView):
     """
     View для страницы Delete Ad
     """
+
     model = Ad
     template_name = "app/delete.html"
     success_url = reverse_lazy("app:profile")

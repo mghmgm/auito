@@ -49,15 +49,19 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ["username"]
     readonly_fields = ["is_active"]
     filter_horizontal = ["favorites"]
-    
+
     fieldsets = (
-        (None, {
-            'fields': ('username', 'first_name', 'last_name', 'email', 'password')
-        }),
-        ('Permissions', {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'last_login'),
-            'classes': ('collapse',)
-        }),
+        (
+            None,
+            {"fields": ("username", "first_name", "last_name", "email", "password")},
+        ),
+        (
+            "Permissions",
+            {
+                "fields": ("is_active", "is_staff", "is_superuser", "last_login"),
+                "classes": ("collapse",),
+            },
+        ),
     )
 
 
@@ -80,8 +84,6 @@ class CarAdmin(admin.ModelAdmin):
 
 
 class AdResource(resources.ModelResource):
-    short_description = fields.Field()
-
     class Meta:
         model = Ad
         fields = ("id", "title", "description", "author", "pub_date", "car")

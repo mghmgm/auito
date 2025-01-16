@@ -26,5 +26,9 @@ urlpatterns = [
     path("<int:pk>/delete/", views.DeleteAdView.as_view(), name="delete"),
     # Маршруты для API
     path("api/", include(router.urls)),  # Пример URL для API
-    path("api/posts/author/<str:author_name>/", views.PostViewSet.as_view({'get': 'search_by_author'}), name="search-by-author"),
+    path(
+        "api/posts/author/<str:author_name>/",
+        views.PostViewSet.as_view({"get": "search_by_author"}),
+        name="search-by-author",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
